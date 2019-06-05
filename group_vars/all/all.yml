@@ -87,3 +87,113 @@ nginx_kube_apiserver_healthcheck_port: 8081
 ## Set Pypi repo and cert accordingly
 # pyrepo_index: https://pypi.example.com/simple
 # pyrepo_cert: /etc/ssl/certs/ca-certificates.crt
+
+## Override specific ansible role default variables
+#  #Hash is default value
+## Kubernetes Master Node
+## roles->kubernetes->master->defaults->main.yml
+# Limits for kube components
+kube_controller_memory_limit: 512M #512M
+kube_controller_cpu_limit: 250m #250m
+kube_controller_memory_requests: 100M #100M
+kube_controller_cpu_requests: 100m #100m
+kube_controller_node_monitor_grace_period: 40s #40s
+kube_controller_node_monitor_period: 5s #5s
+kube_controller_pod_eviction_timeout: 5m0s #5m0s
+kube_controller_terminated_pod_gc_threshold: 12500 #12500
+kube_scheduler_memory_limit: 512M #512M
+kube_scheduler_cpu_limit: 250m #250m
+kube_scheduler_memory_requests: 300M #170M
+kube_scheduler_cpu_requests: 80m #80m
+kube_apiserver_memory_limit: 2000M #2000M
+kube_apiserver_cpu_limit: 800m #800m
+kube_apiserver_memory_requests: 256M #256M
+kube_apiserver_cpu_requests: 100m #100m
+kube_apiserver_request_timeout: "1m0s" #"1m0s"
+
+
+## Kubernetes Worker Node
+## roles->kubernetes->node->defaults->main.yml
+# Reserve this space for kube resources
+kube_memory_reserved: 512M #256M
+kube_cpu_reserved: 500m #100m
+# Reservation for master hosts
+kube_master_memory_reserved: 800M #512M
+kube_master_cpu_reserved: 400m #200m
+
+kubelet_status_update_frequency: 10s #10s
+
+# Requests for nginx load balancer app
+nginx_memory_requests: 32M #32M
+nginx_cpu_requests: 25m #25m
+
+
+## Kubernetes Apps
+## roles->kubernetes-apps->ansible->defaults->main.yml
+# CoreDNS
+# Limits for coredns
+dns_memory_limit: 170Mi #170Mi
+dns_cpu_requests: 100m #100m
+dns_memory_requests: 70Mi #70Mi
+dns_min_replicas: 3 #2
+dns_nodes_per_replica: 16 #16
+dns_cores_per_replica: 256 #256
+
+# nodelocaldns
+nodelocaldns_cpu_requests: 100m #100m
+nodelocaldns_memory_limit: 170Mi #170Mi
+nodelocaldnsdns_memory_requests: 70Mi #70Mi
+
+# Netchecker
+deploy_netchecker: false #false
+netchecker_port: 31081 #31081
+agent_report_interval: 15 #15
+netcheck_namespace: default #default
+
+# Limits for netchecker apps
+netchecker_agent_cpu_limit: 30m #30m
+netchecker_agent_memory_limit: 100M #100M
+netchecker_agent_cpu_requests: 15m #15m
+netchecker_agent_memory_requests: 64M #64M
+netchecker_server_cpu_limit: 100m #100m
+netchecker_server_memory_limit: 256M #256M
+netchecker_server_cpu_requests: 50m #50m
+netchecker_server_memory_requests: 64M #64M
+
+# SecurityContext when PodSecurityPolicy is enabled
+netchecker_agent_user: 1000 #1000
+netchecker_server_user: 1000 #1000
+netchecker_agent_group: 1000 #1000
+netchecker_server_group: 1000 #1000
+
+# Dashboard
+dashboard_enabled: true #true
+dashboard_replicas: 1 #1
+
+# Limits for dashboard
+dashboard_cpu_limit: 100m #100m
+dashboard_memory_limit: 256M #256M
+dashboard_cpu_requests: 50m #50m
+dashboard_memory_requests: 64M #64M
+
+
+## Calico
+## roles->network_plugin->calico->defaults->main.yml
+# Limits for apps
+calico_node_memory_limit: 500M #500M
+calico_node_cpu_limit: 300m #300m
+calico_node_memory_requests: 64M #64M
+calico_node_cpu_requests: 150m #150m
+calicoctl_memory_limit: 170M #170M
+calicoctl_cpu_limit: 100m #100m
+calicoctl_memory_requests: 32M #32M
+calicoctl_cpu_requests: 250m #250m
+
+
+## Flannel
+## roles->network_plugin->flannel->defaults->main.yml
+# Limits for apps
+flannel_memory_limit: 500M #500M
+flannel_cpu_limit: 300m #300m
+flannel_memory_requests: 64M #64M
+flannel_cpu_requests: 150m #150m
